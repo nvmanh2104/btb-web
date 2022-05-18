@@ -1,0 +1,98 @@
+.whitesmoke {
+	background-color: whitesmoke;
+}
+
+.row-warning {
+	border: 2px solid #ff0000;
+}
+/* table row alternative color */
+.ant-table table .even {
+	background-color: whitesmoke;
+}
+
+
+
+/*** Responsive ***/
+/******************/
+
+/* .ant-table- {
+    width: max-content;
+} */
+.ant-table table {
+	width: auto !important;
+	min-width: 100%;
+}
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
+	min-width: 80px;
+}
+.ant-card-extra {
+	max-width: 100%;
+}
+.visible-md {
+	display: none;
+}
+@media (min-width: 992px) {
+	.visible-md {
+		display: block;
+	}
+}
+
+@media (max-width: 600px) {
+	.hidden-sm {
+		display: none !important;
+	}
+}
+@media (max-width: 992px) {
+	.hidden-md {
+		display: none !important;
+	}
+	/* .ant-menu-inline-collapsed {
+    width: 40px;
+  }
+  .ant-menu-inline-collapsed > .ant-menu-item,
+  .ant-menu-inline-collapsed > .ant-menu-item-group > .ant-menu-item-group-list > .ant-menu-item,
+  .ant-menu-inline-collapsed > .ant-menu-item-group > .ant-menu-item-group-list > .ant-menu-submenu > .ant-menu-submenu-title,
+  .ant-menu-inline-collapsed > .ant-menu-submenu > .ant-menu-submenu-title {
+    padding: 0 12px !important;
+  } */
+	.ant-card-body {
+		padding: 12px 4px;
+		zoom: 1;
+	}
+}
+@media (max-width: 1200px) {
+	.hidden-lg {
+		display: block !important;
+	}
+}
+@media (max-width: 1400px) {
+	.hidden-xl {
+		display: block !important;
+	}
+}
+
+@media (max-width: 992px) {
+	.ant-menu-inline-collapsed {
+		width: 40px;
+	}
+	.ant-menu-inline-collapsed > .ant-menu-item,
+	.ant-menu-inline-collapsed > .ant-menu-item-group > .ant-menu-item-group-list > .ant-menu-item,
+	.ant-menu-inline-collapsed
+		> .ant-menu-item-group
+		> .ant-menu-item-group-list
+		> .ant-menu-submenu
+		> .ant-menu-submenu-title,
+	.ant-menu-inline-collapsed > .ant-menu-submenu > .ant-menu-submenu-title {
+		padding: 0 12px !important;
+	}
+	.ant-card-body {
+		padding: 12px 4px;
+		zoom: 1;
+	}
+}
+.mytable {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}

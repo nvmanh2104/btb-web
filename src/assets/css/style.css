@@ -1,0 +1,41 @@
+.node-highlight{
+  background-color: #94b6ce !important;
+}
+.ant-table-tbody > tr.ant-table-row-selected.node-highlight td{
+  background: none;
+}
+.table-schedule-detail p {
+  line-height: 25px;
+  margin: 0px;
+}
+.table-schedule-detail .ant-card.completed{
+  background-color: #3fea3f;
+}
+.table-schedule-detail .ant-card.shipped{
+  background-color: #56b1ff;
+}
+
+.tableCode .ant-table-row.ant-table-row-level-0 .btnCode:hover {
+background-color: #e6f7ff;
+}
+.tableCode .ant-table-row.ant-table-row-level-0:hover .btnCode {
+background-color: #e6f7ff;
+}
+.btnCode {
+border: none;
+box-shadow: 0 1px 0 rgba(0, 0, 0, 0);
+color: rgb(24, 144, 255);
+}
+.logo {
+  width:  cacl(100% - 120px);
+  float: right;
+  color: white;
+  font-size: 18px;
+  margin-top: 10px;
+  /* display: inline-block; */
+}
+
+
+.name{
+text-align: left;
+}

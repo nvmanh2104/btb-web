@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+    aws-web-taynguyen:
+        image: ngovanmanh/aws-web-taynguyen:1.0.0
+        ports:
+        - 2025:3000              
+        deploy:
+            restart_policy:
+                condition: on-failure
+            replicas: 2           
+        
+        networks:
+            - aws_system_network
+        
+networks: 
+  aws_system_network:
+    external: true

@@ -1,0 +1,2 @@
+export const formatAddress = addressObj => addressObj
+    && `${addressObj.streetNumber ? addressObj.streetNumber : ''}, ${addressObj.street ? addressObj.street : ''}, ${addressObj.district ? addressObj.district : ''}, ${addressObj.city ? addressObj.city : ''}, ${addressObj.country ? addressObj.country : ''}`
