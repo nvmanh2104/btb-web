@@ -16,7 +16,7 @@ class App extends React.Component {
   return (
     <Switch>
       {/* <Route exact path={ROUTER.AUTH.LOGIN} component={AuthLayout} />  */}
-      <Route path={ROUTER.SPI} component={AdminLayout} />
+      <Route path={ROUTER.HOME} component={AdminLayout} />
      
     </Switch>
   )

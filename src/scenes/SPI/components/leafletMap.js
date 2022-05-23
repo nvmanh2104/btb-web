@@ -28,9 +28,10 @@ class Map extends React.Component {
 
   clickEvent=(tiffLayer)=>(e)=>{
     var tiffValue="null"
+
     tiffValue = tiffLayer.getValueAtLatLng(+e.latlng.lat, +e.latlng.lng);
     tiffValue = tiffValue === undefined || tiffValue === null ? "null" : tiffValue.toFixed(1);
-    if(tiffValue !==undefined ){
+    if(tiffValue !==undefined&& tiffValue!=="-999.0"){
       let content1 = tiffValue === "null" ? "" : "SPI: " + tiffValue; 
       L.popup()
         .setLatLng(e.latlng)
@@ -42,38 +43,45 @@ class Map extends React.Component {
   radarLayerGroup = L.featureGroup();
   radarTiff 
   zoomend = false
-  onAddLayer =(tiffLayer)=>{
-    if (this.zoomend === false) {
-      tiffLayer.layer.off('load')
-      if (this.radarTiff!==undefined && this.radarTiff.filename !==tiffLayer.filename) {
-        this.radarLayerGroup.removeLayer(this.radarTiff.layer)
-        this.radarTiff = tiffLayer
-      }
-      let isRNull = tiffLayer.layer ? false : true;
-    }
-    else {
-      this.zoomend = false
-    }
-  }
+  // onAddLayer =(tiffLayer)=>{
+  //   if (this.zoomend === false) {
+  //     tiffLayer.layer.off('load')
+  //     if (this.radarTiff!==undefined && this.radarTiff.filename !==tiffLayer.filename) {
+  //       this.radarLayerGroup.removeLayer(this.radarTiff.layer)
+  //       this.radarTiff = tiffLayer
+  //     }
+  //     let isRNull = tiffLayer.layer ? false : true;
+  //   }
+  //   else {
+  //     this.zoomend = false
+  //   }
+  // }
 
-  addLayer2Map(tiffLayer){
-    this.radarLayerGroup.clearLayers();
-    if (tiffLayer.layer) {
-      tiffLayer.layer.addTo(this.radarLayerGroup);
-      tiffLayer.layer.setZIndex(0);
-      tiffLayer.layer.on("load", () => this.onAddLayer(tiffLayer))
-    }
-  }
+  // addLayer2Map(tiffLayer){
+  //   this.radarLayerGroup.clearLayers();
+  //   if (tiffLayer.layer) {
+  //     tiffLayer.layer.addTo(this.radarLayerGroup);
+  //     tiffLayer.layer.setZIndex(0);
+  //     tiffLayer.layer.on("load", () => this.onAddLayer(tiffLayer))
+  //   }
+  //   this.map.off("click");
+  //   this.map.on(
+  //     "click",
+  //     this.clickEvent(tiffLayer.layer,)
+  //   );
+  // }
 
   //dataUrl ='https://raster.weathervietnam.vn/'
-  radarFolder = '/tiffile/final.tif';
+   radarFolder = '/tiffile/t1_1_ouput.tif';
 
   
   truongsa = L.divIcon({className:'mytextlabel',html:'Trường Sa'})
   hoangsa = L.divIcon({className:'mytextlabel',html:'Hoàng Sa'})
   bachlongvi = L.divIcon({className:'mytextlabel',html:'Bạch Long Vĩ'})
 
+  
   async componentDidMount() {
+     
     // tao bang mau radar
     plotty.addColorScale(
       "radar",
@@ -130,7 +138,7 @@ class Map extends React.Component {
 
 
       div.innerHTML +=
-        '<p style ="color: wheat" font-weight:600 > 0mm <img id="colorScaleImage" src="' +
+        '<p style ="color: black" font-weight:600 > 0mm <img id="colorScaleImage" src="' +
         colorScale +
         '" style="vertical-align: middle; height:18px; width:200px;"/> >50mm</p>';
       return div;
@@ -147,13 +155,20 @@ class Map extends React.Component {
       noDataValue: -999,
       clearBeforeMove: false,
       applyDisplayRange: false,
-      blockSize: 65536,
+
       
     });
-    const windSpeedLayer = L.leafletGeotiff( this.radarFolder , {
+    const windSpeedLayer = L.leafletGeotiff(this.props.fileTiff , {
       renderer: plottyRenderer,
-      opacity:0.5
-    }).addTo(this.map);
+      opacity:0.5,
+      // blockSize: 65536,
+            sourceFunction: GeoTIFF.fromUrl,
+    }).addTo(this.map)
+    this.map.on(
+          "click",
+          this.clickEvent(windSpeedLayer,)
+        );
+    // this.addLayer2Map(windSpeedLayer)
 
 
   }

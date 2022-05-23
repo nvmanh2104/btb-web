@@ -33,15 +33,15 @@ class MenuOption extends PureComponent {
   }
 
 handleSubmit =(values)=>{
-  const { method,week, month,season,year,upload} = values
+  let { method,week, month,season,year,upload} = values
   var file = upload[0].originFileObj
   // const formData = new FormData()
   // formData.append('file', file)
-  // console.log(formData.get('file'))
+  month = parseInt(month)
  // eslint-disable-next-line default-case
   switch(method){
     case 'Tuần':
-      this.props.onSubmit({ week:week, month:parseInt(month),file:file})
+      this.props.onSubmit(file,week,month)
       return
   }
 
@@ -64,6 +64,12 @@ handleSubmit =(values)=>{
           name="upload"
           valuePropName="fileList"
           getValueFromEvent={this.handleUpload}
+          rules={[
+            {
+              required: true,
+              message: "Cần upload file",
+            },
+          ]}
           >
           <Upload
           
@@ -173,7 +179,7 @@ handleSubmit =(values)=>{
             rules={[
               {
                 required: true,
-                message: "",
+                message: "Cần chọn năm",
               },
             ]}
           >

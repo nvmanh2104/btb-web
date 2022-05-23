@@ -5,35 +5,37 @@ import TYPES from '../../constants/actionTypes';
 
 
 
-const calculatingSPI = () => {
-	return {
-		type: TYPES.CALCULATING_SPI
-	};
-};
-const calculateSPISuccess = () => {
-	return {
-		type: TYPES.CALCULATE_SPI_SUCCESS
-	};
-};
-const calculateSPIFailure = () => {
-	return {
-		type: TYPES.CALCULATE_SPI_FAILURE
-	};
-};
+// const calculatingSPI = () => {
+// 	return {
+// 		type: TYPES.CALCULATING_SPI
+// 	};
+// };
+// const calculateSPISuccess = (payload) => {
+// 	return {
+// 		payload,
+// 		type: TYPES.CALCULATE_SPI_SUCCESS
+// 	};
+// };
+// const calculateSPIFailure = () => {
+// 	return {
+// 		type: TYPES.CALCULATE_SPI_FAILURE
+// 	};
+// };
 
-export const calculateSPI = (payload, meta) => async (dispatch) => {
+export const calculateSPI = (payload,params,meta) => async (dispatch) => {
 	const api = API.SPI.calculateSPI();
-	dispatch(calculatingSPI());
-    // var obj = payload.file.get('file')
-    debugger
-	const { response } = await apiCall({ ...api, payload });
+	// dispatch(calculatingSPI());
+    // // var obj = payload.file.get('file')
+    // debugger
+	const { response } = await apiCall({ ...api, payload ,params});
+	
 	if (response.data.success === true) {
-		dispatch(calculateSPISuccess());
+		// dispatch(calculateSPISuccess(response.data));
 		if (meta && meta.onSuccess) {
-			meta.onSuccess();
+			meta.onSuccess(response.data);
 		}
 	} else {
-		dispatch(calculateSPIFailure());
+		// dispatch(calculateSPIFailure());
 		if (meta && meta.onError) {
 			meta.onError();
 		}
