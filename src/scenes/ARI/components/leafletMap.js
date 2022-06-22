@@ -53,7 +53,6 @@ class Map extends React.Component {
   async componentDidMount() {
      
     // tao bang mau radar
-
     plotty.addColorScale(
       "radar",
       ["#9900cc",
@@ -64,7 +63,7 @@ class Map extends React.Component {
       "#0745f9",
         "rgba(104,211,250,0.2)",
       ],
-      [0, 0.15, 0.3, 0.45, 0.6, 0.75, 1.0]
+      [0.01, 0.12, 0.2, 0.3, 0.48, 0.65, 1.0]
     );
     //load base map
 
@@ -108,13 +107,14 @@ class Map extends React.Component {
 
 
       div.innerHTML +=
-        '<p style ="color: black" font-weight:600 > -2 <img id="colorScaleImage" src="' +
+        '<p style ="color: black" font-weight:600 > 20 <img id="colorScaleImage" src="' +
         colorScale +
-        '" style="vertical-align: middle; height:18px; width:200px;"/> >2</p>';
+        '" style="vertical-align: middle; height:18px; width:200px;"/> >50</p>';
       return div;
     };
     Templegend.addTo(this.map);
     this.tiffLayerGroup.addTo(this.map);
+    
     this.addLayer2Map(this.props.fileTiff)
    
   }
@@ -122,21 +122,21 @@ class Map extends React.Component {
   componentDidUpdate(){
     this.addLayer2Map(this.props.fileTiff)
   }
-  convertSPI2Text(spi){
-    return spi >1.99 ? 'cực kỳ ẩm ướt': spi>1.49? 'Rất ẩm ướt' :spi>0.99 ?'Ẩm ướt vừa phải':spi>-0.98 ? "Cận chuẩn" :spi>-1.5?'Khô vừa phải':spi>-2?'Rất khô':spi===-999.0?'null':'Cực kỳ khô'
+  convertARI2Text(ari){
+    return ari>2? 'Ẩm ướt với cây trồng':ari >0.41?'Phát triển phù hợp' :ari===-999.0?'null' :'khô hạn với nông nghiệp'
   }
   //addLayer2Map
   clickEvent = (radarLayer) => (e) => {
     var radar = "null";
     if (radarLayer !== null) {
       radar = radarLayer.getValueAtLatLng(+e.latlng.lat, +e.latlng.lng);
-      radar = radar === undefined || radar === null ? "null" : radar.toFixed(1);
+      radar = radar === undefined || radar === null ? "null" : radar.toFixed(1) + " "+ this.convertARI2Text(radar.toFixed(1));
     
     }
 
    
     if (radar !== undefined ) {
-      let content1 = radar === "null" ? "" : "spi: " + radar + " "+ this.convertSPI2Text(radar);
+      let content1 = radar === "null" ? "" : "ari: " + radar;
       L.popup()
         .setLatLng(e.latlng)
         .setContent(content1)
@@ -144,11 +144,12 @@ class Map extends React.Component {
     }
   };
   addLayer2Map(tiffLayer){
+    debugger
     this.tiffLayerGroup.clearLayers();
     if(tiffLayer!==''){
       var plottyRenderer = L.LeafletGeotiff.plotty({
-        displayMin: -2,
-        displayMax:2,
+        displayMin: 0.39,
+        displayMax:1.9,
         clampLow: true,
         clampHigh: true,
         colorScale: "radar",

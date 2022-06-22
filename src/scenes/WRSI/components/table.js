@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import {  ExcelRenderer } from "react-excel-renderer";
 import { Table ,Row, Col } from "antd";
 import axios from 'axios';
-class SPITable extends Component {
+class SCWBTable extends Component {
   constructor(props) {
     super(props);
     this.state = {  
-        
+    
     };
   }
  componentDidMount(){
@@ -31,4 +31,4 @@ class SPITable extends Component {
     );
   }
 }
-export default SPITable;
+export default SCWBTable;

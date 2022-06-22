@@ -53,7 +53,6 @@ class Map extends React.Component {
   async componentDidMount() {
      
     // tao bang mau radar
-
     plotty.addColorScale(
       "radar",
       ["#9900cc",
@@ -108,13 +107,14 @@ class Map extends React.Component {
 
 
       div.innerHTML +=
-        '<p style ="color: black" font-weight:600 > -2 <img id="colorScaleImage" src="' +
+        '<p style ="color: black" font-weight:600 > <-2 <img id="colorScaleImage" src="' +
         colorScale +
         '" style="vertical-align: middle; height:18px; width:200px;"/> >2</p>';
       return div;
     };
     Templegend.addTo(this.map);
     this.tiffLayerGroup.addTo(this.map);
+    
     this.addLayer2Map(this.props.fileTiff)
    
   }
@@ -122,21 +122,21 @@ class Map extends React.Component {
   componentDidUpdate(){
     this.addLayer2Map(this.props.fileTiff)
   }
-  convertSPI2Text(spi){
-    return spi >1.99 ? 'cực kỳ ẩm ướt': spi>1.49? 'Rất ẩm ướt' :spi>0.99 ?'Ẩm ướt vừa phải':spi>-0.98 ? "Cận chuẩn" :spi>-1.5?'Khô vừa phải':spi>-2?'Rất khô':spi===-999.0?'null':'Cực kỳ khô'
+  convertSCWB2Text(thi){
+    return thi===-999.0? 'null': thi>2? 'Cực kỳ ẩm ướt':thi >1.49?'Rất ẩm ướt'  :thi>0.99?'ẩm ướt vừa phải':thi>-0.99?'Bình thường':thi>-1.49?'Khô vừa phải':thi>-1.99?'rất khô':'cực kỳ khô'
   }
   //addLayer2Map
   clickEvent = (radarLayer) => (e) => {
     var radar = "null";
     if (radarLayer !== null) {
       radar = radarLayer.getValueAtLatLng(+e.latlng.lat, +e.latlng.lng);
-      radar = radar === undefined || radar === null ? "null" : radar.toFixed(1);
+      radar = radar === undefined || radar === null ? "null" : radar.toFixed(1) +" "+this.convertSCWB2Text(radar.toFixed(1)) ;
     
     }
 
    
     if (radar !== undefined ) {
-      let content1 = radar === "null" ? "" : "spi: " + radar + " "+ this.convertSPI2Text(radar);
+      let content1 = radar === "null" ? "" : "scwb: " + radar;
       L.popup()
         .setLatLng(e.latlng)
         .setContent(content1)
@@ -144,12 +144,13 @@ class Map extends React.Component {
     }
   };
   addLayer2Map(tiffLayer){
+    debugger
     this.tiffLayerGroup.clearLayers();
     if(tiffLayer!==''){
       var plottyRenderer = L.LeafletGeotiff.plotty({
         displayMin: -2,
         displayMax:2,
-        clampLow: true,
+        clampLow: false,
         clampHigh: true,
         colorScale: "radar",
         noDataValue: -999,

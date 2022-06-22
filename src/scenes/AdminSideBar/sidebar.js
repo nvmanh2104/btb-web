@@ -5,7 +5,7 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux'
 import ROUTER from '../../constants/router'
 import SIDERS from './sidebar-config'
-// import { getTitle } from '../Header/actions'
+import { getTitle } from '../Header/actions'
 import { isBelowBreakpoint } from '../../util/windows'
 import select from "../../util/select";
 import Icon from '@ant-design/icons';
@@ -28,7 +28,7 @@ class AdminSideBar extends React.Component{
             oldPath: path
         })
         this.chooseOpenKey()
-        // this.props.getTitle(path)
+        this.props.getTitle(path)
     }
 
     menuItemSelected = e => {
@@ -38,7 +38,7 @@ class AdminSideBar extends React.Component{
             this.setState({ openKey: '' })
         }
         this.setState({ oldPath: path })
-        // this.props.getTitle(path)
+        this.props.getTitle(path)
     }
 
     subMenuSelected = e => {
@@ -102,7 +102,7 @@ class AdminSideBar extends React.Component{
                 onCollapse={this.onCollapse} theme="dark" style={{ boxShadow: '2px 0 6px rgba(0, 21, 41, 0.35)' }}
             >
                 <div style={{ margin: 24, textAlign: 'center', background: 'white' }} >
-                    <Link to="">
+                    <Link to={ROUTER.SPI.INDEX}>
                         <img src="/images/vnmha.jpg" style={{ width: '50%' }} alt="" />
                     </Link>
                 </div>
@@ -127,6 +127,6 @@ const mapStateToProps = (state) => ({
   });
 
 
-// const mapDispatchToProps = dispatch => ({ getTitle: key => dispatch(getTitle(key)) })
+const mapDispatchToProps = dispatch => ({ getTitle: key => dispatch(getTitle(key)) })
 
-export default withRouter(connect(mapStateToProps, '')(AdminSideBar))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AdminSideBar))

@@ -6,8 +6,8 @@ import * as SatisticWaterActions from './StatisticWater/actions'
 
 export default {
 
-    ...AWSActions,
-    ...StatisticActions,
-    ...SatisticWaterActions
+    // ...AWSActions,
+    // ...StatisticActions,
+    // ...SatisticWaterActions
 
 }

@@ -3,14 +3,11 @@ import { backpage, isBelowBreakpoint } from "../../../util/windows";
 import { connect } from "react-redux";
 import {} from "../actions";
 import {
-  Row,
-  Col,
   Select,
   DatePicker,
   Form,
   Upload,
   Button,
-  notification,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Map from "./leafletMap.js";
@@ -33,13 +30,13 @@ class MenuOption extends PureComponent {
   }
 
 handleSubmit =(values)=>{
-  let { method,week, month,season,year,upload} = values
+  let { method,week, month,year,upload} = values
   var file = upload[0].originFileObj
+  year= year.year()
   // const formData = new FormData()
   // formData.append('file', file)
- 
  // eslint-disable-next-line default-case
- this.props.onSubmit(file,method, week, month,season,year);
+ this.props.onSubmit(file,method, week, month,year);
 
 
 
@@ -91,8 +88,6 @@ handleSubmit =(values)=>{
             <Select style={{ width: "100%" }} onChange={this.methodChange}>
               <Option value="Tuần">Tuần</Option>
               <Option value="Tháng">Tháng</Option>
-              <Option value="Mùa">Mùa</Option>
-              <Option value="Năm">Năm</Option>
             </Select>
           </Item>
 
@@ -106,12 +101,12 @@ handleSubmit =(values)=>{
                   message: "",
                 },
               ]}
-              initialValue={"t1"}
+              initialValue={"1"}
             >
               <Select style={{ width: "100%" }}>
-                <Option value="t1">t1</Option>
-                <Option value="t2">t2</Option>
-                <Option value="t3">t3</Option>
+                <Option value="1">t1</Option>
+                <Option value="2">t2</Option>
+                <Option value="3">t3</Option>
               </Select>
             </Item>
           ) : (
@@ -121,7 +116,7 @@ handleSubmit =(values)=>{
             <Item
               label="Tháng"
               name="month"
-              initialValue={1}
+              initialValue={"1"}
               rules={[
                 {
                   required: true,
@@ -147,28 +142,7 @@ handleSubmit =(values)=>{
           ) : (
             ""
           )}
-          {this.state.method === "Mùa" ? (
-            <Item
-              label="Vụ"
-              name="season"
-              initialValue={"vm"}
-              rules={[
-                {
-                  required: true,
-                  message: "",
-                },
-              ]}
-            >
-              <Select style={{ width: "100%" }}>
-                <Option value="vm">vụ mùa</Option>
-                <Option value="ht">hè thu</Option>
-                <Option value="dx">đông xuân</Option>
-              </Select>
-            </Item>
-          ) : (
-            ""
-          )}
-
+          
           <Item
             label="Năm"
             name="year"

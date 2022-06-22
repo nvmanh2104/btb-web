@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {  ExcelRenderer } from "react-excel-renderer";
 import { Table ,Row, Col } from "antd";
 import axios from 'axios';
-class SPITable extends Component {
+class ARITable extends Component {
   constructor(props) {
     super(props);
     this.state = {  
@@ -31,4 +31,4 @@ class SPITable extends Component {
     );
   }
 }
-export default SPITable;
+export default ARITable;

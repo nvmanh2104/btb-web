@@ -1,23 +1,21 @@
-import React, { Component, Fragment, PureComponent } from "react";
+import React, { Component, Fragment } from "react";
 import {  ExcelRenderer } from "react-excel-renderer";
 import { connect } from "react-redux";
 import {} from "./actions";
 import { Row, Col, notification, Table } from "antd";
 import MenuOption from "./components/MenuOption";
 import {
-  calculateWeekSPI,
-  calculateMonthSPI,
-  calculateSeasonSPI,
-  calculateYearSPI,
+  calculateWeekARI,
+  calculateMonthARI,
+
 } from "./actions";
 import Map from "./components/leafletMap.js";
-import SPITable from "./components/table.js";
+import ARITable from "./components/table.js";
 import axios from 'axios';
-const moment = require("moment");
 // const { TabPane } = Tabs;
 // const { Title } = Typography;
 
-class AWSMap extends Component {
+class ARIMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,8 +30,8 @@ class AWSMap extends Component {
           editable: false
         },
         {
-          title: "SPI",
-          dataIndex: "spi",
+          title: "ARI",
+          dataIndex: "pet",
           editable: false
         },
       ]
@@ -41,7 +39,6 @@ class AWSMap extends Component {
   }
 
   displayTable = (url,tiffFile) => {
-
     axios({
       url: url,
       method: "GET",
@@ -65,7 +62,7 @@ class AWSMap extends Component {
                 newRows.push({
                   key: index,
                   name: row[0],
-                  spi: row[1],
+                  pet: row[1],
                 });
               }
             });
@@ -89,16 +86,28 @@ class AWSMap extends Component {
       }
     });
   };
-  handleSubmit = (file, method, week, month, season, year) => {
+  handleSubmit = (file, method, week, month, year) => {
     month = parseInt(month);
     let params;
     const formData = new FormData();
     formData.append("file", file);
-
+    debugger
     switch (method) {
       case "Tuần":
-        params = { week: week, month: month };
-        this.props.calculateWeekSPI(formData, params, {
+        params = { week: week, month: month,year:year };
+        this.props.calculateWeekARI(formData, params, {
+          onSuccess: (response) => {
+            //tiff_file_path //excel_file_path
+            this.displayTable(response.excel_file_path,response.tiff_file_path)
+            notification.success({ message: "Tính toán thành công" });
+          },
+          onError: (error) =>
+            notification.error({ message: `${error} - Tính toán thất bại` }),
+        });
+        break;
+      case "Tháng":
+        params = { month: month,year:year };
+        this.props.calculateMonthARI(formData, params, {
           onSuccess: (response) => {
             //tiff_file_path //excel_file_path
             this.displayTable(response.excel_file_path,response.tiff_file_path)
@@ -109,42 +118,7 @@ class AWSMap extends Component {
             notification.error({ message: `${error} - Tính toán thất bại` }),
         });
         break;
-      case "Tháng":
-        params = { month: month };
-        this.props.calculateMonthSPI(formData, params, {
-          onSuccess: (response) => {
-            //tiff_file_path //excel_file_path
-            this.setState({ response: response });
-            notification.success({ message: "Tính toán thành công" });
-          },
-          onError: (error) =>
-            notification.error({ message: `${error} - Tính toán thất bại` }),
-        });
-        break;
-      case "Mùa":
-        params = { season: season };
-        this.props.calculateSeasonSPI(formData, params, {
-          onSuccess: (response) => {
-            //tiff_file_path //excel_file_path
-            this.setState({ response: response });
-            notification.success({ message: "Tính toán thành công" });
-          },
-          onError: (error) =>
-            notification.error({ message: `${error} - Tính toán thất bại` }),
-        });
-        break;
-      case "Năm":
-        // params = { year: year };
-        this.props.calculateYearSPI(formData, {
-          onSuccess: (response) => {
-            //tiff_file_path //excel_file_path
-            this.setState({ response: response });
-            notification.success({ message: "Tính toán thành công" });
-          },
-          onError: (error) =>
-            notification.error({ message: `${error} - Tính toán thất bại` }),
-        });
-        break;
+     
       default:
         return;
     }
@@ -166,7 +140,7 @@ class AWSMap extends Component {
                 fontWeight: "600",
               }}
             >
-              Tính toán chỉ số SPI
+              Tính toán chỉ số ARI
             </div>
           </Col>
         </Row>
@@ -175,7 +149,7 @@ class AWSMap extends Component {
         ) : (
           <Row>
             <Col span={8}>
-              <SPITable rows={this.state.rows} columns ={this.state.columns} />
+              <ARITable rows={this.state.rows} columns ={this.state.columns} />
             </Col>
             <Col span={16}>
               <Map fileTiff={this.state.tiffFile} />
@@ -187,17 +161,15 @@ class AWSMap extends Component {
   }
 }
 
+
 const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  calculateWeekSPI: (payload, params, meta) =>
-    dispatch(calculateWeekSPI(payload, params, meta)),
-  calculateMonthSPI: (payload, params, meta) =>
-    dispatch(calculateMonthSPI(payload, params, meta)),
-  calculateSeasonSPI: (payload, params, meta) =>
-    dispatch(calculateSeasonSPI(payload, params, meta)),
-  calculateYearSPI: (payload, meta) =>
-    dispatch(calculateYearSPI(payload, meta)),
+  calculateWeekARI: (payload, params, meta) =>
+    dispatch(calculateWeekARI(payload, params, meta)),
+  calculateMonthARI: (payload, params, meta) =>
+    dispatch(calculateMonthARI(payload, params, meta)),
+
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AWSMap);
+ export default connect(mapStateToProps, mapDispatchToProps)(ARIMap);
