@@ -63,7 +63,7 @@ class Map extends React.Component {
       "#0745f9",
         "rgba(104,211,250,0.2)",
       ],
-      [0, 0.15, 0.3, 0.45, 0.6, 0.75, 1.0]
+      [0, 0.4, 0.5, 0.6, 0.74, 0.83, 1.0]
     );
     //load base map
 
@@ -107,9 +107,9 @@ class Map extends React.Component {
 
 
       div.innerHTML +=
-        '<p style ="color: black" font-weight:600 > <-2 <img id="colorScaleImage" src="' +
+        '<p style ="color: black" font-weight:600 > 50 <img id="colorScaleImage" src="' +
         colorScale +
-        '" style="vertical-align: middle; height:18px; width:200px;"/> >2</p>';
+        '" style="vertical-align: middle; height:18px; width:200px;"/> 100</p>';
       return div;
     };
     Templegend.addTo(this.map);
@@ -122,15 +122,15 @@ class Map extends React.Component {
   componentDidUpdate(){
     this.addLayer2Map(this.props.fileTiff)
   }
-  convertSCWB2Text(thi){
-    return thi===-999.0? 'null': thi>2? 'Cực kỳ ẩm ướt':thi >1.49?'Rất ẩm ướt'  :thi>0.99?'ẩm ướt vừa phải':thi>-0.99?'Bình thường':thi>-1.49?'Khô vừa phải':thi>-1.99?'rất khô':'cực kỳ khô'
+  convertWRSI2Text(wrsi){
+    return wrsi===-999.0? 'null': wrsi===100? 'Rất tốt':wrsi >95?'Được Mùa'  :wrsi>80?'Bình thường':wrsi>60?'Không tốt':wrsi>50?'Kém':'Mất mùa'
   }
   //addLayer2Map
   clickEvent = (radarLayer) => (e) => {
     var radar = "null";
     if (radarLayer !== null) {
       radar = radarLayer.getValueAtLatLng(+e.latlng.lat, +e.latlng.lng);
-      radar = radar === undefined || radar === null ? "null" : radar.toFixed(1) +" "+this.convertSCWB2Text(radar.toFixed(1)) ;
+      radar = radar === undefined || radar === null ? "null" : radar.toFixed(1) +" "+this.convertWRSI2Text(radar.toFixed(1)) ;
     
     }
 
@@ -144,13 +144,12 @@ class Map extends React.Component {
     }
   };
   addLayer2Map(tiffLayer){
-    debugger
     this.tiffLayerGroup.clearLayers();
     if(tiffLayer!==''){
       var plottyRenderer = L.LeafletGeotiff.plotty({
-        displayMin: -2,
-        displayMax:2,
-        clampLow: false,
+        displayMin: 0,
+        displayMax:100,
+        clampLow: true,
         clampHigh: true,
         colorScale: "radar",
         noDataValue: -999,

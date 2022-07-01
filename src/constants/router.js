@@ -16,5 +16,8 @@ export default {
 	},
 	SCWB:{
 		INDEX:'/scwb'
+	},
+	WRSI:{
+		INDEX:'/wrsi'
 	}
 };

@@ -36,6 +36,13 @@ export default [
 		title: 'Chỉ số SCWB',
 	
 	},
+	{
+		key: 'WRSI',
+		to: ROUTER.WRSI.INDEX,
+		icon: 'contacts',
+		title: 'Chỉ số WRSI',
+	
+	},
 
 
 	

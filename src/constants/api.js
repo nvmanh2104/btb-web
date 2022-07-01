@@ -82,5 +82,12 @@ export const API = {
       headers: HEADERS.JWT_HEADER()
     }),
   },
+  WRSI:{
+    calculateWRSI: () => ({
+      endPoint: rootApi + '/kc/weekmonth/interpolation',
+      method: 'POST',
+      headers: HEADERS.JWT_HEADER()
+    }),
+  }
 
 }

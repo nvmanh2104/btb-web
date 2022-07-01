@@ -30,13 +30,13 @@ class MenuOption extends PureComponent {
   }
 
 handleSubmit =(values)=>{
-  let { method,week, month,year,upload} = values
+  let { type,total_days,week, month,year,upload} = values
   var file = upload[0].originFileObj
   year= year.year()
   // const formData = new FormData()
   // formData.append('file', file)
  // eslint-disable-next-line default-case
- this.props.onSubmit(file,method, week, month,year);
+ this.props.onSubmit(file,type,total_days, week, month,year);
 
 
 
@@ -72,28 +72,58 @@ handleSubmit =(values)=>{
             <Button icon={<UploadOutlined />}>Upload</Button>
           </Upload>
           </Item>
-        
-
           <Item
-            label="Thời Đoạn"
-            name="method"
-            initialValue={"Tuần"}
-            rules={[
-              {
-                required: true,
-                message: "",
-              },
-            ]}
-          >
-            <Select style={{ width: "100%" }} onChange={this.methodChange}>
-              <Option value="Tuần">Tuần</Option>
-              <Option value="Tháng">Tháng</Option>
-            </Select>
-          </Item>
-
-          {this.state.method === "Tuần" ? (
+              label="Giống cây trồng"
+              name="type"
+              initialValue={"LUA_DONG_XUAN"}
+              rules={[
+                {
+                  required: true,
+                  message: "",
+                },
+              ]}
+            >
+              <Select style={{ width: "100%" }}>
+                <Option value="LUA_DONG_XUAN">Lúa Đông Xuân</Option>
+                <Option value=" LUA_HE_THU">Lúa Hè Thu</Option>
+                <Option value="LUA_VU_MUA">Lúa Vụ Mùa</Option>
+                <Option value="NGO_HE_THU">Ngô Hè Thu</Option>
+                <Option value="LAC_HE_THU">Lạc Hè Thu</Option>
+                <Option value="DAU_TUONG_HE_THU">Đậu Tương Hè Thu</Option>
+                <Option value="NGO_VU_MUA">Ngô Vụ Mùa</Option>
+                <Option value=" DAU_TUONG_VU_MUA">Đậu Tương Vụ Mùa</Option>
+              </Select>
+            </Item>
             <Item
-              label="Tuần"
+              label="Tổng số ngày"
+              name="total_days"
+              rules={[
+                {
+                  required: true,
+                  message: "",
+                },
+              ]}
+              initialValue={"90"}
+            >
+              <Select style={{ width: "100%" }}>
+                <Option value="90">90</Option>
+                <Option value="100">100</Option>
+                <Option value="110">110</Option>
+                <Option value="120">120</Option>
+                <Option value="130">130</Option>
+                <Option value="140">140</Option>
+                <Option value="150">150</Option>
+                <Option value="160">160</Option>
+                <Option value="250">250</Option>
+                <Option value="320">110</Option>
+                <Option value="320">110</Option>
+                <Option value="365">365</Option>
+              </Select>
+            </Item>
+        
+          
+            <Item
+              label="Tuần bắt đầu"
               name="week"
               rules={[
                 {
@@ -109,10 +139,8 @@ handleSubmit =(values)=>{
                 <Option value="3">t3</Option>
               </Select>
             </Item>
-          ) : (
-            ""
-          )}
-          {this.state.method === "Tháng" || this.state.method === "Tuần" ? (
+        
+
             <Item
               label="Tháng"
               name="month"
@@ -139,10 +167,6 @@ handleSubmit =(values)=>{
                 <Option value="12">12</Option>
               </Select>
             </Item>
-          ) : (
-            ""
-          )}
-          
           <Item
             label="Năm"
             name="year"

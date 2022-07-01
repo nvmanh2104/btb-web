@@ -5,8 +5,7 @@ import {} from "./actions";
 import { Row, Col, notification, Table } from "antd";
 import MenuOption from "./components/MenuOption";
 import {
-  calculateWeekSCWB,
-  calculateMonthSCWB
+  calculateWRSI,
 } from "./actions";
 import Map from "./components/leafletMap.js";
 import SCWBTable from "./components/table.js";
@@ -15,7 +14,7 @@ const moment = require("moment");
 // const { TabPane } = Tabs;
 // const { Title } = Typography;
 
-class SCWBMap extends Component {
+class WRSIMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,8 +29,28 @@ class SCWBMap extends Component {
           editable: false
         },
         {
-          title: "SCWB",
-          dataIndex: "pet",
+          title: "Đầu Vụ",
+          dataIndex: "dv",
+          editable: false
+        },
+        {
+          title: "Phát Triển",
+          dataIndex: "pt",
+          editable: false
+        },
+        {
+          title: "Giữa Vụ",
+          dataIndex: "gv",
+          editable: false
+        },
+        {
+          title: "Cuối Vụ",
+          dataIndex: "cv",
+          editable: false
+        },
+        {
+          title: "WRSI",
+          dataIndex: "tb",
           editable: false
         },
       ]
@@ -62,7 +81,11 @@ class SCWBMap extends Component {
                 newRows.push({
                   key: index,
                   name: row[0],
-                  pet: row[1],
+                  dv: row[1].toFixed(1),
+                  pt:row[2].toFixed(1),
+                  gv:row[3].toFixed(1),
+                  cv:row[4].toFixed(1),
+                  tb:row[5].toFixed(1)
                 });
               }
             });
@@ -86,16 +109,16 @@ class SCWBMap extends Component {
       }
     });
   };
-  handleSubmit = (file, method, week, month, year) => {
+  handleSubmit = (file, type,total_days, week, month, year) => {
     month = parseInt(month);
+    
+    total_days=parseInt(total_days);
     let params;
     const formData = new FormData();
     formData.append("file", file);
 
-    switch (method) {
-      case "Tuần":
-        params = { week: week, month: month,year:year };
-        this.props.calculateWeekSCWB(formData, params, {
+        params = { week: week,total_days:total_days,type:type, month: month,year:year };
+        this.props.calculateWRSI(formData, params, {
           onSuccess: (response) => {
             //tiff_file_path //excel_file_path
             this.displayTable(response.excel_file_path,response.tiff_file_path)
@@ -104,24 +127,7 @@ class SCWBMap extends Component {
           onError: (error) =>
             notification.error({ message: `${error} - Tính toán thất bại` }),
         });
-        break;
-      case "Tháng":
-        params = { month: month,year:year };
-        this.props.calculateMonthSCWB(formData, params, {
-          onSuccess: (response) => {
-            //tiff_file_path //excel_file_path
-            this.displayTable(response.excel_file_path,response.tiff_file_path)
-            // this.setState({ response: response });
-            notification.success({ message: "Tính toán thành công" });
-          },
-          onError: (error) =>
-            notification.error({ message: `${error} - Tính toán thất bại` }),
-        });
-        break;
-     
-      default:
-        return;
-    }
+
   };
   async componentDidMount() {}
 
@@ -140,7 +146,7 @@ class SCWBMap extends Component {
                 fontWeight: "600",
               }}
             >
-              Tính toán chỉ số SCWB
+              Tính toán chỉ số WRSI
             </div>
           </Col>
         </Row>
@@ -148,10 +154,10 @@ class SCWBMap extends Component {
           ""
         ) : (
           <Row>
-            <Col span={8}>
+            <Col span={12}>
               <SCWBTable rows={this.state.rows} columns ={this.state.columns} />
             </Col>
-            <Col span={16}>
+            <Col span={12}>
               <Map fileTiff={this.state.tiffFile} />
             </Col>
           </Row>
@@ -164,10 +170,8 @@ class SCWBMap extends Component {
 const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  calculateWeekSCWB: (payload, params, meta) =>
-    dispatch(calculateWeekSCWB(payload, params, meta)),
-  calculateMonthSCWB: (payload, params, meta) =>
-    dispatch(calculateMonthSCWB(payload, params, meta)),
+  calculateWRSI: (payload, params, meta) =>
+    dispatch(calculateWRSI(payload, params, meta)),
 });
 
- export default connect(mapStateToProps, mapDispatchToProps)(SCWBMap);
+ export default connect(mapStateToProps, mapDispatchToProps)(WRSIMap);

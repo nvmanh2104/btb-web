@@ -11,6 +11,7 @@ import "./admin.css";
 import ARI from "../ARI/index";
 import THI from '../THI/index'
 import SCWB from '../SCWB/index'
+import WRSI from '../WRSI/index'
 const { Content } = Layout;
 
 class AdminLayout extends React.Component {
@@ -31,6 +32,7 @@ class AdminLayout extends React.Component {
            <ARI/>
            <THI/>
            <SCWB/>
+           <WRSI/>
           </div>
           
         </Content>
